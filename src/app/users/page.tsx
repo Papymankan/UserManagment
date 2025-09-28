@@ -1,8 +1,8 @@
-import UserList from "@/components/UserList";
+import UserListContainer from "@/components/containers/UserListContainer";
 import React from "react";
 
 function page() {
-  return <UserList />;
+  return <UserListContainer />;
 }
 
 export default page;

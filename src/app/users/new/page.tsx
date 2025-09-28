@@ -1,9 +1,8 @@
-import React from 'react'
+import UserFormContainer from "@/components/containers/UserFormContainer";
+import React from "react";
 
 function page() {
-  return (
-    <div>page</div>
-  )
+  return <UserFormContainer />;
 }
 
-export default page
+export default page;

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #fff;
   --foreground: #171717;
 }
 
@@ -12,3 +12,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background-color: rgb(238, 238, 238); /* apply here instead of only body */
+}
