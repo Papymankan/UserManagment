@@ -2,13 +2,15 @@ import { User } from "@/types";
 import React from "react";
 import { Input } from "./ui/Input";
 import UserCard from "./UserCard";
+import Loader from "./Loader";
 
 interface UserListProps {
   users: User[];
+  loading: boolean;
 }
 
-function UserList() {
-  // function UserList({ users }: UserListProps) {
+function UserList({ users, loading }: UserListProps) {
+
   return (
     <div className="p-6 space-y-4">
       <h1 className="text-2xl font-bold">Users</h1>
@@ -17,7 +19,7 @@ function UserList() {
         className="border-1 focus:!ring-0 !w-80"
       />
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
-        <UserCard />
+        {loading ? <Loader /> : users.map((user) => <UserCard key={user.id} />)}
       </div>
     </div>
   );
