@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { User } from "@/types";
-import { userService } from "@/services/userService";
 import { EditUserDialog } from "../EditUserDialog";
+import { useForm } from "react-hook-form";
 
 interface EditUserDialogContainerProps {
   open: boolean;
@@ -12,6 +12,8 @@ interface EditUserDialogContainerProps {
   submitLoading: boolean;
 }
 
+type Inputs = Omit<User, "id">;
+
 export function EditUserDialogContainer({
   open,
   user,
@@ -19,26 +21,31 @@ export function EditUserDialogContainer({
   onConfirm,
   submitLoading,
 }: EditUserDialogContainerProps) {
-  const [form, setForm] = useState(
-    user || { name: "", username: "", email: "", phone: "" }
-  );
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Inputs>({
+    defaultValues: user || { name: "", username: "", email: "", phone: "" },
+  });
 
   useEffect(() => {
-    if (user) setForm(user);
-  }, [user]);
+    reset(user || { name: "", username: "", email: "", phone: "" });
+  }, [user, reset]);
 
-  const handleChange = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
+  const submitHandler = async (data: Inputs) => {
+    await onConfirm(data);
   };
 
   return (
     <EditUserDialog
       open={open}
-      form={form}
-      onChange={handleChange}
+      register={register}
+      handleSubmit={handleSubmit(submitHandler)}
       onClose={onClose}
-      onConfirm={onConfirm}
       submitLoading={submitLoading}
+      errors={errors}
     />
   );
 }

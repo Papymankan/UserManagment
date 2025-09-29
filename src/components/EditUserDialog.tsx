@@ -10,23 +10,28 @@ import {
 import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
 import { User } from "@/types";
+import {
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from "react-hook-form";
 
 interface EditUserDialogProps {
   open: boolean;
-  form: { name: string; username: string; email: string; phone: string };
-  onChange: (field: string, value: string) => void;
+  register: UseFormRegister<Omit<User, "id">>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<Omit<User, "id">>>;
   onClose: () => void;
-  onConfirm: (updatedUser: Partial<User>) => Promise<void>;
   submitLoading: boolean;
+  errors: FieldErrors<Omit<User, "id">>;
 }
 
 export function EditUserDialog({
   open,
-  form,
-  onChange,
+  register,
+  handleSubmit,
   onClose,
-  onConfirm,
   submitLoading,
+  errors,
 }: EditUserDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -35,45 +40,58 @@ export function EditUserDialog({
           <DialogTitle>Edit User</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-2">
+        <form className="space-y-2" onSubmit={handleSubmit}>
           <Input
-            className="border-1 focus:!ring-0"
-            value={form.name}
-            onChange={(e) => onChange("name", e.target.value)}
             placeholder="Name"
+            {...register("name", { required: "Name is required" })}
           />
-          <Input
-            className="border-1 focus:!ring-0"
-            value={form.username}
-            onChange={(e) => onChange("username", e.target.value)}
-            placeholder="Username"
-          />
-          <Input
-            className="border-1 focus:!ring-0"
-            value={form.email}
-            onChange={(e) => onChange("email", e.target.value)}
-            placeholder="Email"
-          />
-          <Input
-            className="border-1 focus:!ring-0"
-            value={form.phone}
-            onChange={(e) => onChange("phone", e.target.value)}
-            placeholder="Phone"
-          />
-        </div>
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            className="bg-green-500 text-white hover:opacity-75"
-            onClick={() => onConfirm(form)}
-            disabled={submitLoading}
-          >
-            {submitLoading ? "Saving..." : "Save"}
-          </Button>
-        </DialogFooter>
+          <Input
+            placeholder="Username"
+            {...register("username", { required: "Username is required" })}
+          />
+          {errors.username && (
+            <p className="text-red-500">{errors.username.message}</p>
+          )}
+
+          <Input
+            className="border-1 focus:!ring-0"
+            placeholder="Email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email address",
+              },
+            })}
+          />
+
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
+          )}
+
+          <Input
+            placeholder="Phone"
+            {...register("phone", { required: "Phone number is required" })}
+          />
+          {errors.phone && (
+            <p className="text-red-500">{errors.phone.message}</p>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-green-500 text-white hover:opacity-75"
+              disabled={submitLoading}
+            >
+              {submitLoading ? "Saving..." : "Save"}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

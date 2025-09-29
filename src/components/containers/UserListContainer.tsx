@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import UserList from "../UserList";
 import { useUsers } from "@/hook/useUsers";
-import { EditUserDialog } from "../EditUserDialog";
 import { DeleteUserDialog } from "../DeleteUserDialog";
 import { User } from "@/types";
 import { EditUserDialogContainer } from "./EditUserDialogContainer";
