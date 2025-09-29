@@ -6,9 +6,11 @@ import { useUsers } from "@/hook/useUsers";
 import { EditUserDialog } from "../EditUserDialog";
 import { DeleteUserDialog } from "../DeleteUserDialog";
 import { User } from "@/types";
+import { EditUserDialogContainer } from "./EditUserDialogContainer";
 
 function UserListContainer() {
-  const { users, loading, error } = useUsers();
+  const { users, loading, error, updateUser, removeUser, submitLoading } =
+    useUsers();
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [deletingUser, setDeletingUser] = useState<User | null>(null);
   if (error) return <p className="text-red-500">{error}</p>;
@@ -22,22 +24,24 @@ function UserListContainer() {
         onDelete={(user: User) => setDeletingUser(user)}
       />
 
-      <EditUserDialog
+      <EditUserDialogContainer
         open={!!editingUser}
         user={editingUser}
+        submitLoading={submitLoading}
         onClose={() => setEditingUser(null)}
         onConfirm={async (updatedUser) => {
-          // await updatedUser(editingUser!.id, updatedUser);
-          setEditingUser(null);
+          await updateUser(editingUser!.id, updatedUser);
+          setEditingUser(null)
         }}
-      />
+        />
 
       <DeleteUserDialog
         open={!!deletingUser}
+        submitLoading={submitLoading}
         onClose={() => setDeletingUser(null)}
         onConfirm={async () => {
-          // await deleteUser(deletingUser!.id);
-          setDeletingUser(null);
+          await removeUser(deletingUser!.id);
+          setDeletingUser(null)
         }}
       />
     </>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,25 +13,21 @@ import { User } from "@/types";
 
 interface EditUserDialogProps {
   open: boolean;
-  user: User | null;
+  form: { name: string; username: string; email: string; phone: string };
+  onChange: (field: string, value: string) => void;
   onClose: () => void;
-  onConfirm: (user: Omit<User, "id">) => void;
+  onConfirm: (updatedUser: Partial<User>) => Promise<void>;
+  submitLoading: boolean;
 }
 
 export function EditUserDialog({
   open,
-  user,
+  form,
+  onChange,
   onClose,
   onConfirm,
+  submitLoading,
 }: EditUserDialogProps) {
-  const [form, setForm] = useState(
-    user || { name: "", username: "", email: "", phone: "" }
-  );
-
-  React.useEffect(() => {
-    if (user) setForm(user);
-  }, [user]);
-
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
@@ -43,42 +39,39 @@ export function EditUserDialog({
           <Input
             className="border-1 focus:!ring-0"
             value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            onChange={(e) => onChange("name", e.target.value)}
             placeholder="Name"
           />
           <Input
             className="border-1 focus:!ring-0"
             value={form.username}
-            onChange={(e) => setForm({ ...form, username: e.target.value })}
+            onChange={(e) => onChange("username", e.target.value)}
             placeholder="Username"
           />
           <Input
             className="border-1 focus:!ring-0"
             value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            onChange={(e) => onChange("email", e.target.value)}
             placeholder="Email"
           />
           <Input
             className="border-1 focus:!ring-0"
             value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            onChange={(e) => onChange("phone", e.target.value)}
             placeholder="Phone"
           />
         </div>
 
         <DialogFooter>
-          <Button
-            className="hover:!opacity-75"
-            variant="outline"
-            onClick={onClose}
-          >
+          <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
           <Button
             className="bg-green-500 text-white hover:opacity-75"
             onClick={() => onConfirm(form)}
+            disabled={submitLoading}
           >
-            Save
+            {submitLoading ? "Saving..." : "Save"}
           </Button>
         </DialogFooter>
       </DialogContent>

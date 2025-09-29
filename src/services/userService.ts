@@ -17,6 +17,11 @@ export const userService = {
     return res.data;
   },
 
+  async updateUser(id: number, user: Partial<User>): Promise<User> {
+    const res = await apiClient.patch<User>(`/users/${id}`, user);
+    return res.data;
+  },
+
   async deleteUser(id: number): Promise<void> {
     await apiClient.delete(`/users/${id}`);
   },
