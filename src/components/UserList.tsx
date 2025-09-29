@@ -7,10 +7,11 @@ import Loader from "./Loader";
 interface UserListProps {
   users: User[];
   loading: boolean;
+  onEdit: (user: User) => void;
+  onDelete: (user: User) => void;
 }
 
-function UserList({ users, loading }: UserListProps) {
-  
+function UserList({ users, loading, onEdit, onDelete }: UserListProps) {
   return (
     <div className="p-6 space-y-4">
       <h1 className="text-2xl font-bold">Users</h1>
@@ -25,11 +26,9 @@ function UserList({ users, loading }: UserListProps) {
           users.map((user) => (
             <UserCard
               key={user.id}
-              id={user.id}
-              name={user.name}
-              username={user.username}
-              email={user.email}
-              phone={user.phone}
+              user={user}
+              onEdit={onEdit}
+              onDelete={onDelete}
             />
           ))
         )}
