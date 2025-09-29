@@ -3,7 +3,15 @@ import { Button } from "./ui/Button";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import { Card, CardContent } from "./ui/Card";
 
-function UserCard() {
+type UserCardParams = {
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+  id: number;
+};
+
+function UserCard({ name, username, email, phone, id }: UserCardParams) {
   return (
     <Card className="border-gray-200 !shadow-md  bg-white">
       <CardContent>
@@ -11,13 +19,13 @@ function UserCard() {
           {/* Avatar */}
           <div className="flex items-center space-x-4">
             <span className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-xl font-bold">
-              P
+              {name.split("")[0].toLocaleUpperCase()}
             </span>
             <div>
-              <p className="font-medium">{"Parsa"}</p>
-              <p className="text-sm text-gray-500">Papymankan</p>
-              <p className="text-sm text-gray-500">parsa85rostami@gmail.com</p>
-              <p className="text-sm text-gray-500">09188786856</p>
+              <p className="font-medium">{name}</p>
+              <p className="text-sm text-gray-500">{username}</p>
+              <p className="text-sm text-gray-500">{email}</p>
+              <p className="text-sm text-gray-500">{phone}</p>
             </div>
           </div>
 

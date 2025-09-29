@@ -2,7 +2,7 @@
 
 import React from "react";
 import UserList from "../UserList";
-import { useUsers } from "@/hook/useUser";
+import { useUsers } from "@/hook/useUsers";
 
 function UserListContainer() {
   const { users, loading, error } = useUsers();

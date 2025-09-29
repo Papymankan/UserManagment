@@ -10,7 +10,7 @@ interface UserListProps {
 }
 
 function UserList({ users, loading }: UserListProps) {
-
+  
   return (
     <div className="p-6 space-y-4">
       <h1 className="text-2xl font-bold">Users</h1>
@@ -19,7 +19,20 @@ function UserList({ users, loading }: UserListProps) {
         className="border-1 focus:!ring-0 !w-80"
       />
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
-        {loading ? <Loader /> : users.map((user) => <UserCard key={user.id} />)}
+        {loading ? (
+          <Loader />
+        ) : (
+          users.map((user) => (
+            <UserCard
+              key={user.id}
+              id={user.id}
+              name={user.name}
+              username={user.username}
+              email={user.email}
+              phone={user.phone}
+            />
+          ))
+        )}
       </div>
     </div>
   );
