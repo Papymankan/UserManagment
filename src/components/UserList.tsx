@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Input } from "./ui/Input";
 import UserCard from "./UserCard";
 import Loader from "./Loader";
+import Link from "next/link";
 
 interface UserListProps {
   users: User[];
@@ -30,6 +31,9 @@ function UserList({ users, loading, onEdit, onDelete }: UserListProps) {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
+
+      <Link href={"/users/new"} className="px-6 py-2 bg-blue-500 text-white rounded-2xl ml-5">new user</Link>
+
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
         {loading ? (
           <Loader />

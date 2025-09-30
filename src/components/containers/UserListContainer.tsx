@@ -6,10 +6,11 @@ import { useUsers } from "@/hook/useUsers";
 import { DeleteUserDialog } from "../DeleteUserDialog";
 import { User } from "@/types";
 import { EditUserDialogContainer } from "./EditUserDialogContainer";
+import { useUsersContext } from "@/Context/UsersContext";
 
 function UserListContainer() {
   const { users, loading, error, updateUser, removeUser, submitLoading } =
-    useUsers();
+    useUsersContext();
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [deletingUser, setDeletingUser] = useState<User | null>(null);
   if (error) return <p className="text-red-500">{error}</p>;
@@ -30,9 +31,9 @@ function UserListContainer() {
         onClose={() => setEditingUser(null)}
         onConfirm={async (updatedUser) => {
           await updateUser(editingUser!.id, updatedUser);
-          setEditingUser(null)
+          setEditingUser(null);
         }}
-        />
+      />
 
       <DeleteUserDialog
         open={!!deletingUser}
@@ -40,7 +41,7 @@ function UserListContainer() {
         onClose={() => setDeletingUser(null)}
         onConfirm={async () => {
           await removeUser(deletingUser!.id);
-          setDeletingUser(null)
+          setDeletingUser(null);
         }}
       />
     </>
